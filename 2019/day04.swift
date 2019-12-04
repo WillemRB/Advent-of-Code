@@ -3,7 +3,7 @@ import Foundation
 let start = 172930
 let end = 683082
 
-var count = 0
+var countA = 0, countB = 0
 
 for password in start...end {
   var str = String(password)
@@ -18,11 +18,19 @@ for password in start...end {
     second = str.removeFirst()
     increases = first <= second
     double = double || (first == second)
+
   }
 
   if (increases && double) {
-    count += 1
+    countA += 1
+    
+    var hashmap: [Character: Int] = [:]
+    String(password).forEach {
+      hashmap[$0] = (hashmap[$0] ?? 0)! + 1
+    }
+    countB += hashmap.values.contains(2) ? 1 : 0
   }
 }
 
-print("Possible passcodes: \(count)")
+print("Possible passcodes A: \(countA)")
+print("Possible passcodes B: \(countB)")
