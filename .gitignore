@@ -1,6 +1,7 @@
 *.user
 .vs/
 
-
 [Bb]in
 [Oo]bj
+
+2020/input/*.txt
