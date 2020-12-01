@@ -14,8 +14,16 @@ namespace AdventOfCode
             {
                 for (int j = i + 1; j < expenses.Count; j++)
                 {
-                    if ((expenses[i] + expenses[j]) == 2020)
-                        Console.WriteLine($"{expenses[i] * expenses[j]}");
+                    // Part A
+                    //if ((expenses[i] + expenses[j]) == 2020)
+                    //    Console.WriteLine($"{expenses[i] * expenses[j]}");
+
+                    // Part B
+                    for (int k = j + 1; k < expenses.Count; k++)
+                    {
+                        if ((expenses[i] + expenses[j] + expenses[k]) == 2020)
+                            Console.WriteLine($"{expenses[i] * expenses[j] * expenses[k]}");
+                    }
                 }
             }
         }
