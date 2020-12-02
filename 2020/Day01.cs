@@ -8,7 +8,7 @@ namespace AdventOfCode
     {
         static void Day01()
         {
-            var expenses = File.ReadAllLines("input/day01.txt").Select(int.Parse).ToList();
+            var expenses = File.ReadAllLines("../../../input/day01.txt").Select(int.Parse).ToList();
 
             for (int i = 0; i < expenses.Count - 1; i++)
             {

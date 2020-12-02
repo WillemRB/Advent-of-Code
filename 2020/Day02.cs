@@ -11,8 +11,8 @@ namespace AdventOfCode
         {
             var regex = new Regex(@"^(?<min>\d+)-(?<max>\d+) (?<char>.): (?<password>.+)$");
 
-            var validPasswords = File.ReadAllLines("input/day02.txt")
-                .Where(line =>
+            var validPasswords = File.ReadAllLines("../../../input/day02.txt")
+                .Count(line =>
                 {
                     var match = regex.Match(line);
                     var min = int.Parse(match.Groups["min"].Value);
@@ -26,7 +26,7 @@ namespace AdventOfCode
 
                     // Part B
                     return password[min - 1] == c ^ password[max - 1] == c;
-                }).Count();
+                });
 
             Console.WriteLine($"Valid passwords: {validPasswords}");
         }
