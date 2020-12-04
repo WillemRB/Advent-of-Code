@@ -19,12 +19,11 @@ namespace AdventOfCode
 
         static long TreesEncountered(string[] area, int slopeX, int slopeY = 1)
         {
-            int x = 0, y = 0, trees = 0;
-            while (y < area.Length)
+            int x = 0, trees = 0;
+            for (int y = 0; y < area.Length; y += slopeY)
             {
                 trees += area[y][x % area[y].Length] == '#' ? 1 : 0;
                 x += slopeX;
-                y += slopeY;
             }
 
             return trees;
