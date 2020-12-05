@@ -11,13 +11,20 @@ namespace AdventOfCode
             var boardingPasses = File.ReadAllLines("../../../input/day05.txt").Select(l => new Seat(l));
 
             // Part A
-            Console.WriteLine($"Hightest seat ID: {boardingPasses.Max(b => b.Id)}");
+            //Console.WriteLine($"Hightest seat ID: {boardingPasses.Max(b => b.Id)}");
+
+            // Part B
+            var seatId = Enumerable
+                .Range(boardingPasses.Min(b => b.Id), boardingPasses.Max(b => b.Id))
+                .First(seatId => !boardingPasses.Any(p => p.Id == seatId));
+
+            Console.WriteLine($"ID of seat: {seatId}");
         }
     }
 
     class Seat
     {
-        string _partition;
+        readonly string _partition;
 
         public int Id => (Row * 8) + Column;
 
