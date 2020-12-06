@@ -28,9 +28,9 @@ namespace AdventOfCode
 
         public int Id => (Row * 8) + Column;
 
-        public int Row => Convert.ToInt32(string.Join("", _partition.Take(7).Select(c => c == 'B' ? '1' : '0')), fromBase: 2);
+        public int Row => Convert.ToInt32(_partition[0..7].Replace('B', '1').Replace('F', '0'), fromBase: 2);
 
-        public int Column => Convert.ToInt32(string.Join("", _partition.Skip(7).Take(3).Select(c => c == 'R' ? '1' : '0')), fromBase: 2);
+        public int Column => Convert.ToInt32(_partition[8..].Replace('R', '1').Replace('L', '0'), fromBase: 2);
 
         public Seat(string partition)
         {
