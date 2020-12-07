@@ -15,8 +15,12 @@ namespace AdventOfCode
                 .Select(r => new Bag(r))
                 .ToDictionary(b => b.Color);
 
-            Console.WriteLine($"Bags that can contain a shiny gold: " +
-                $"{rules.Where(b => b.Key != "shiny gold").Count(kv => ContainsShinyGold(kv.Value))}");
+            // Part A
+            //Console.WriteLine($"Bags that can contain a shiny gold: " +
+            //    $"{rules.Where(b => b.Key != "shiny gold").Count(kv => ContainsShinyGold(kv.Value))}");
+
+            // Part B
+            Console.WriteLine($"Bags required inside a shiny gold: {BagCount(rules["shiny gold"])}");
         }
 
         static bool ContainsShinyGold(Bag bag)
@@ -26,13 +30,22 @@ namespace AdventOfCode
 
             return bag.Contains.Any(rule => ContainsShinyGold(rules[rule.Color]));
         }
+
+        static int BagCount(Bag bag)
+        {
+            if (!bag.Contains.Any())
+                return 1;
+
+            return (bag.Color == "shiny gold" ? 0 : 1) +
+                bag.Contains.Sum(b => b.Quantity * BagCount(rules[b.Color]));
+        }
     }
 
     class Bag
     {
         public string Color { get; }
 
-        public int Quantity { get; }
+        public int Quantity { get; } = 1;
 
         public List<Bag> Contains { get; } = new List<Bag>();
 
