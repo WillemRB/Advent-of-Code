@@ -43,11 +43,11 @@ namespace AdventOfCode
 
         public void AddAnswers(string input)
         {
-            input.ToCharArray().ToList().ForEach(a =>
+            foreach (char a in input)
             {
                 if (!answers.TryAdd(a, 1))
                     answers[a]++;
-            });
+            }
 
             groupSize++;
         }

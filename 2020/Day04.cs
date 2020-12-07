@@ -56,9 +56,9 @@ namespace AdventOfCode
                 return false;
 
             var valid = true;
-            valid &= int.Parse(fields["byr"]) >= 1920 && int.Parse(fields["byr"]) <= 2002;
-            valid &= int.Parse(fields["iyr"]) >= 2010 && int.Parse(fields["iyr"]) <= 2020;
-            valid &= int.Parse(fields["eyr"]) >= 2020 && int.Parse(fields["eyr"]) <= 2030;
+            valid &= Regex.IsMatch(fields["byr"], @"^(19[2-9]\d|200[0-2])$");
+            valid &= Regex.IsMatch(fields["iyr"], @"^20(1\d|20)$");
+            valid &= Regex.IsMatch(fields["eyr"], @"^20(2\d|30)$");
             valid &= Regex.IsMatch(fields["hgt"], @"^(\d{3}cm|\d{2}in)$");
             valid &= Regex.IsMatch(fields["hcl"], @"^#[0-9a-f]{6}$");
             valid &= new List<string> { "amb", "blu", "brn", "gry", "grn", "hzl", "oth" }.Contains(fields["ecl"]);

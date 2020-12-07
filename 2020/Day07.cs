@@ -25,17 +25,12 @@ namespace AdventOfCode
 
         static bool ContainsShinyGold(Bag bag)
         {
-            if (bag.Contains.Any(b => b.Color == "shiny gold"))
-                return true;
-
-            return bag.Contains.Any(rule => ContainsShinyGold(rules[rule.Color]));
+            return bag.Contains.Any(b => b.Color == "shiny gold") ||
+                bag.Contains.Any(rule => ContainsShinyGold(rules[rule.Color]));
         }
 
         static int BagCount(Bag bag)
         {
-            if (!bag.Contains.Any())
-                return 1;
-
             return (bag.Color == "shiny gold" ? 0 : 1) +
                 bag.Contains.Sum(b => b.Quantity * BagCount(rules[b.Color]));
         }
@@ -43,11 +38,11 @@ namespace AdventOfCode
 
     class Bag
     {
-        public string Color { get; }
-
-        public int Quantity { get; } = 1;
-
+        public string Color { get; set; }
+        public int Quantity { get; set; } = 1;
         public List<Bag> Contains { get; } = new List<Bag>();
+
+        public Bag() { }
 
         public Bag(string input)
         {
@@ -60,14 +55,11 @@ namespace AdventOfCode
 
             for (int i = 4; i < split.Length; i += 4)
             {
-                Contains.Add(new Bag(int.Parse(split[i]), string.Join(" ", split.Skip(i + 1).Take(2))));
+                Contains.Add(new Bag { 
+                    Quantity = int.Parse(split[i]), 
+                    Color = string.Join(" ", split.Skip(i + 1).Take(2))
+                });
             }
-        }
-
-        public Bag(int quantity, string color)
-        {
-            Color = color;
-            Quantity = quantity;
         }
     }
 }
