@@ -16,31 +16,29 @@ namespace AdventOfCode
                 .ToList();
 
             // Part A
-            //Console.WriteLine($"Value before a loop starts: {RunInstructions().Item1}");
+            //Console.WriteLine($"Value before a loop starts: {RunInstructions().value}");
 
             // Part B
             for (int i = 0; i < instructions.Count; i++)
             {
-                instructions.ForEach(op => op.Processed = false);
-
                 if (instructions[i].Operation == "acc")
                     continue;
 
-                var op = instructions[i].Operation;
-                instructions[i].Operation = op == "jmp" ? "nop" : "jmp";
+                instructions[i].FlipOperation();
 
                 var result = RunInstructions();
-                if (result.Item2)
+                if (result.terminated)
                 {
-                    Console.WriteLine($"Value when program terminates: {result.Item1}");
+                    Console.WriteLine($"Value when program terminates: {result.value}");
                     break;
                 }
 
-                instructions[i].Operation = op;
+                instructions[i].FlipOperation();
+                instructions.ForEach(op => op.Processed = false);
             }
         }
 
-        static Tuple<int, bool> RunInstructions()
+        static (int value, bool terminated) RunInstructions()
         {
             int head = 0, value = 0;
             while (!instructions[head].Processed)
@@ -62,10 +60,10 @@ namespace AdventOfCode
                 }
 
                 if (head == instructions.Count)
-                    return Tuple.Create(value, true);
+                    return (value, true);
             }
 
-            return Tuple.Create(value, false);
+            return (value, false);
         }
     }
 
@@ -79,6 +77,12 @@ namespace AdventOfCode
         {
             Operation = instruction.Split(' ')[0];
             Argument = int.Parse(instruction.Split(' ')[1]);
+        }
+
+        public void FlipOperation()
+        {
+            if (Operation != "acc")
+                Operation = Operation == "jmp" ? "nop" : "jmp";
         }
     }
 }
