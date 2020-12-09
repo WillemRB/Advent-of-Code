@@ -12,15 +12,27 @@ namespace AdventOfCode
         {
             var xmas = File.ReadAllLines("../../../input/day09.txt")
                 .Select(long.Parse)
-                .ToList();
+                .ToArray();
 
-            // Part A
-            for (int i = preambleSize; i < xmas.Count; i++)
+            for (int i = preambleSize; i < xmas.Length; i++)
             {
                 var preamble = xmas.Skip(i - preambleSize).Take(preambleSize);
 
                 if (!preamble.Any(l => preamble.Contains(xmas[i] - l)))
-                    Console.WriteLine($"Invalid value: {xmas[i]}");
+                {
+                    // Part A
+                    //Console.WriteLine($"Invalid value: {xmas[i]}");
+
+                    // Part B
+                    for (int j = 0; j < i; j++)
+                    {
+                        for (int k = j + 1; k < i; k++)
+                        {
+                            if (xmas[j..k].Sum() == xmas[i])
+                                Console.WriteLine($"Encryption weakness: {xmas[j..k].Min() + xmas[j..k].Max()}");
+                        }
+                    }
+                }
             }
         }
     }
