@@ -10,24 +10,9 @@ namespace AdventOfCode
     {
         static void Day04()
         {
-            var passportsData = File.ReadAllLines("../../../input/day04.txt");
-
-            var passports = new List<Passport>();
-
-            var current = new Passport();
-            foreach (var line in passportsData)
-            {
-                if (string.IsNullOrEmpty(line))
-                {
-                    passports.Add(current);
-                    current = new Passport();
-                    continue;
-                }
-
-                current.Add(line);
-            }
-
-            passports.Add(current);
+            var passports = File.ReadAllText("../../../input/day04.txt")
+                .Split("\r\n\r\n")
+                .Select(p => new Passport(p.Replace("\r\n", " ")));
 
             // Part A
             //Console.WriteLine($"Valid passports: {passports.Count(p => p.HasRequiredFields)}");
@@ -41,9 +26,9 @@ namespace AdventOfCode
     {
         Dictionary<string, string> fields = new Dictionary<string, string>();
 
-        public void Add(string input)
+        public Passport(string data)
         {
-            input
+            data
                 .Split(' ').ToList()
                 .ForEach(s => fields.Add(s.Split(':')[0], s.Split(':')[1]));
         }

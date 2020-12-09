@@ -9,23 +9,9 @@ namespace AdventOfCode
     {
         static void Day06()
         {
-            var answers = File.ReadAllLines("../../../input/day06.txt");
-
-            var groups = new List<Group>();
-
-            var current = new Group();
-            foreach (var line in answers)
-            {
-                if (string.IsNullOrEmpty(line))
-                {
-                    groups.Add(current);
-                    current = new Group();
-                    continue;
-                }
-
-                current.AddAnswers(line);
-            }
-            groups.Add(current);
+            var groups = File.ReadAllText("../../../input/day06.txt")
+                .Split("\r\n\r\n")
+                .Select(g => new Group(g.Split("\r\n")));
 
             // Part A
             //Console.WriteLine($"Sum of 'yes' answers: {groups.Sum(g => g.AnyYesAnswers)}");
@@ -41,15 +27,14 @@ namespace AdventOfCode
 
         int groupSize = 0;
 
-        public void AddAnswers(string input)
+        public Group(string[] input)
         {
-            foreach (char a in input)
+            groupSize = input.Length;
+            foreach (char a in string.Join("", input))
             {
                 if (!answers.TryAdd(a, 1))
                     answers[a]++;
             }
-
-            groupSize++;
         }
 
         public int AnyYesAnswers => answers.Count;
