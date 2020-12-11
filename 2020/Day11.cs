@@ -12,14 +12,18 @@ namespace AdventOfCode
 
         static void Day11()
         {
-            var data = File.ReadAllLines("../../../input/day11a.txt");
-            rowLength = data[0].Length + 2;
+            var data = File.ReadAllLines("../../../input/day11.txt");
+            rowLength = data[0].Length;
 
-            layout = data
-                .Select(l => $".{l}.".ToCharArray()).ToList()
-                .Prepend(new String('.', rowLength).ToCharArray())
-                .Append(new String('.', rowLength).ToCharArray())
-                .ToList();
+            layout = data.Select(l => l.ToCharArray()).ToList();
+
+            // Part A
+            //int limit = 1;
+            //var occupiedLimit = 4;
+
+            // Part B
+            int limit = int.MaxValue;
+            var occupiedLimit = 5;
 
             bool changed;
             do
@@ -27,13 +31,11 @@ namespace AdventOfCode
                 var newLayout = new List<char[]>();
                 changed = false;
 
-                newLayout.Add(new String('.', layout[0].Length).ToCharArray());
-
-                for (int x = 1; x < layout.Count - 1; x++)
+                for (int x = 0; x < layout.Count; x++)
                 {
                     var row = string.Empty;
 
-                    for (int y = 1; y < layout[0].Length - 1; y++)
+                    for (int y = 0; y < layout[0].Length; y++)
                     {
                         if (layout[x][y] == '.')
                         {
@@ -41,43 +43,24 @@ namespace AdventOfCode
                             continue;
                         }
 
-                        /* Part A
-                        var adjacent = new List<char> {
-                            layout[x-1][y-1], layout[x-1][y], layout[x-1][y+1],
-                            layout[x][y-1], layout[x][y+1],
-                            layout[x+1][y-1], layout[x+1][y], layout[x+1][y+1],
-                        };
-
-                        if (adjacent.Count(s => s == '#') == 0)
-                            row += "#";
-                        else if (adjacent.Count(s => s == '#') >= 4)
-                            row += "L";
-                        else
-                            row += layout[x][y];
-                        //*/
-
-                        //* Part B
                         var sight = new List<char> {
-                            GetSeat(x, y, -1, -1), GetSeat(x, y, -1, 0), GetSeat(x, y, -1, +1),
-                            GetSeat(x, y, 0, -1), GetSeat(x, y, 0, +1),
-                            GetSeat(x, y, +1, -1), GetSeat(x, y, +1, 0), GetSeat(x, y, +1, +1),
+                            GetSeat(x, y, -1, -1, limit), GetSeat(x, y, -1, 0, limit), GetSeat(x, y, -1, +1, limit),
+                            GetSeat(x, y, 0, -1, limit), GetSeat(x, y, 0, +1, limit),
+                            GetSeat(x, y, +1, -1, limit), GetSeat(x, y, +1, 0, limit), GetSeat(x, y, +1, +1, limit),
                         };
 
                         if (sight.Count(s => s == '#') == 0)
                             row += "#";
-                        else if (sight.Count(s => s == '#') >= 5)
+                        else if (sight.Count(s => s == '#') >= occupiedLimit)
                             row += "L";
                         else
                             row += layout[x][y];
-                        //*/
 
                         changed |= layout[x][y] != row.Last();
                     }
 
-                    newLayout.Add($".{row}.".ToCharArray());
+                    newLayout.Add(row.ToCharArray());
                 }
-
-                newLayout.Add(new String('.', layout[0].Length).ToCharArray());
 
                 layout = newLayout;
             }
@@ -86,9 +69,9 @@ namespace AdventOfCode
             Console.WriteLine($"Occupied seats: {layout.Sum(row => row.Count(seat => seat == '#'))}");
         }
 
-        static char GetSeat(int x, int y, int dx, int dy)
+        static char GetSeat(int x, int y, int dx, int dy, int limit)
         {
-            while (true)
+            do
             {
                 x += dx;
                 y += dy;
@@ -97,8 +80,13 @@ namespace AdventOfCode
                     return '.';
 
                 if (layout[x][y] != '.')
-                    return layout[x][y];
+                    break;
+
+                limit--;
             }
+            while (limit > 0);
+
+            return layout[x][y];
         }
     }
 }
