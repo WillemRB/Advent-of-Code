@@ -7,14 +7,15 @@ namespace AdventOfCode
 {
     partial class AdventOfCode
     {
+        static List<char[]> layout;
+        static int rowLength;
+
         static void Day11()
         {
-            int rowLength;
-
             var data = File.ReadAllLines("../../../input/day11a.txt");
             rowLength = data[0].Length + 2;
 
-            var layout = data
+            layout = data
                 .Select(l => $".{l}.".ToCharArray()).ToList()
                 .Prepend(new String('.', rowLength).ToCharArray())
                 .Append(new String('.', rowLength).ToCharArray())
@@ -40,6 +41,7 @@ namespace AdventOfCode
                             continue;
                         }
 
+                        /* Part A
                         var adjacent = new List<char> {
                             layout[x-1][y-1], layout[x-1][y], layout[x-1][y+1],
                             layout[x][y-1], layout[x][y+1],
@@ -52,6 +54,22 @@ namespace AdventOfCode
                             row += "L";
                         else
                             row += layout[x][y];
+                        //*/
+
+                        //* Part B
+                        var sight = new List<char> {
+                            GetSeat(x, y, -1, -1), GetSeat(x, y, -1, 0), GetSeat(x, y, -1, +1),
+                            GetSeat(x, y, 0, -1), GetSeat(x, y, 0, +1),
+                            GetSeat(x, y, +1, -1), GetSeat(x, y, +1, 0), GetSeat(x, y, +1, +1),
+                        };
+
+                        if (sight.Count(s => s == '#') == 0)
+                            row += "#";
+                        else if (sight.Count(s => s == '#') >= 5)
+                            row += "L";
+                        else
+                            row += layout[x][y];
+                        //*/
 
                         changed |= layout[x][y] != row.Last();
                     }
@@ -65,8 +83,22 @@ namespace AdventOfCode
             }
             while (changed);
 
-            // Part A
             Console.WriteLine($"Occupied seats: {layout.Sum(row => row.Count(seat => seat == '#'))}");
+        }
+
+        static char GetSeat(int x, int y, int dx, int dy)
+        {
+            while (true)
+            {
+                x += dx;
+                y += dy;
+
+                if (x < 0 || y < 0 || x >= layout.Count || y >= rowLength)
+                    return '.';
+
+                if (layout[x][y] != '.')
+                    return layout[x][y];
+            }
         }
     }
 }
