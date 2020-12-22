@@ -4,7 +4,7 @@
     {
         static void Main()
         {
-            Day18();
+            Day22();
         }
     }
 }
