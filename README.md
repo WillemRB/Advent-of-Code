@@ -4,3 +4,4 @@
 * 2018 - Go
 * 2019 - Swift
 * 2020 - .NET
+* 2021 - [Nim](https://nim-lang.org/)
