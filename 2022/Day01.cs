@@ -9,9 +9,10 @@ namespace AdventOfCode
         {
             Elfs = new();
 
-            var lines = File.ReadAllLines(@"D:\day01.txt");
+            var lines = File.ReadAllLines(@"day01.txt");
 
             Elf elf = new();
+
             foreach (var line in lines)
             {
                 if (string.IsNullOrEmpty(line))
@@ -23,6 +24,8 @@ namespace AdventOfCode
 
                 elf.Calories.Add(int.Parse(line));
             }
+
+            Elfs.Add(elf);
         }
 
         [Test]
