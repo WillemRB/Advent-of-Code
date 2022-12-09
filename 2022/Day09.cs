@@ -45,12 +45,12 @@ namespace AdventOfCode
             {
                 for (int s = 0; s < motion.step; s++)
                 {
-                    rope[0] = motion.direction switch
+                    rope[0] += motion.direction switch
                     {
-                        'R' => rope[0].Move(1, 0),
-                        'L' => rope[0].Move(-1, 0),
-                        'U' => rope[0].Move(0, 1),
-                        'D' => rope[0].Move(0, -1),
+                        'R' => new Vector2(1, 0),
+                        'L' => new Vector2(-1, 0),
+                        'U' => new Vector2(0, 1),
+                        'D' => new Vector2(0, -1),
                     };
 
                     for (int i = 1; i < rope.Count; i++)
@@ -80,14 +80,6 @@ namespace AdventOfCode
             tail.Y += (diff.Y < 0 ? -1 : 0) + (diff.Y > 0 ? 1 : 0);
 
             return tail;
-        }
-
-        public static Vector2 Move(this Vector2 head, int dx, int dy)
-        {
-            head.X += dx;
-            head.Y += dy;
-
-            return head;
         }
     }
 }
