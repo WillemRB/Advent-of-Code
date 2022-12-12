@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode
+﻿using System.Diagnostics;
+
+namespace AdventOfCode
 {
     public class Day10
     {
@@ -6,6 +8,7 @@
         private List<int> _checks;
         private int _registerValue;
         private int _cycle;
+        private List<char> _crt;
 
         [SetUp]
         public void Setup()
@@ -20,10 +23,28 @@
             _checks = new List<int> { 20, 60, 100, 140, 180, 180, 220 };
             _registerValue = 1;
             _cycle = 0;
+            _crt = new();
         }
 
         [Test]
         public void PartA()
+        {
+            var result = Run();
+
+            Assert.That(result, Is.EqualTo(13140));
+        }
+
+        [Test]
+        public void PartB()
+        {
+            Run();
+
+            var screen = string.Concat(_crt);
+
+            Assert.IsFalse(string.IsNullOrEmpty(screen));
+        }
+
+        private int Run()
         {
             var result = 0;
 
@@ -42,21 +63,21 @@
             }
             while (_operations.Any());
 
-            Assert.That(result, Is.EqualTo(13140));
-        }
-
-        [Test]
-        public void PartB()
-        {
-
+            return result;
         }
 
         private void Tick(ref int result)
         {
+            var pixel = (_cycle % 40) >= _registerValue - 1 && (_cycle % 40) <= _registerValue + 1 ? '#' : '.';
+            _crt.Add(pixel);
+
             _cycle++;
 
             if (_checks.Contains(_cycle))
                 result += _cycle * _registerValue;
+
+            if (_cycle % 40 == 0)
+                _crt.Add('\n');
         }
     }
 }
